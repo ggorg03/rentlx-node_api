@@ -1,0 +1,110 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "RentalX documentation",
+        "description": "This is an API",
+        "version": "0.0.4",
+        "license": {"name": "MIT"},
+        "contact": {"email": "ggorgon03@mail.com"}
+    },
+    "paths": {
+        "/categories": {
+            "get": {
+                "tags": ["Category"],
+                "summary": "List",
+                "description": "List all categories",
+                "responses": {
+                    "200": {
+                        "description": "Success!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Category"],
+                "summary": "Create",
+                "description": "Create a new category if it doesn't already exists",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "name": "name",
+                                "description": "name of a new category"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created successfully!"
+                    },
+                    "400": {
+                        "description": "Category already exists"
+                    }
+                }
+            }
+        },
+        "/categories/import": {
+            "post": {
+                "tags": ["Category"],
+                "summary": "Import categories",
+                "description": "Create new categories using a .csv if it doesn't already exists",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "file":{
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created successfully!"
+                    }
+                }
+            }
+        }
+    }
+}

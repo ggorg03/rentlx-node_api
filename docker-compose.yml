@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:15.4
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=rentx_db
+    volumes:
+      - pgdata:/data/postgres
+    networks:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - 5050:80
+    depends_on:
+      - postgres
+
+  app:
+    image: node:16
+    working_dir: /usr/app
+    container_name: rentx
+    volumes:
+      - .:/usr/app
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+volumes:
+  pgdata:
+
+networks:
+  backend: {}
+
+# How connect with PGADMIN it --------------------------------------------------
+# Access PgAdmin at broswer at locahost:{services.pgadmin.ports[0]}
+# LOGGIN -----------------------------------------------------------------------
+#      - login: {services.pgadmin.enviroment.PGADMIN_DEFAULT_EMAIL}
+#      - password: {services.pgadmin.enviroment.PGADMIN_DEFAULT_PASSWORD}
+# 
+# REGISTER SERVICE STEP --------------------------------------------------------
+# - GENERAL    - Name: choose a name
+# ------------------------------------------------------------------------------
+# - CONNECTION - Host: {services.postgres.container_name}
+#              - Port: {services.postgres.ports[0]}
+#              - Maintance database: {services.postgres.environment.POSTGRES_DB}
+#              - Username: {services.postgres.environment.POSTGRES_USER}
+#              - Password: {services.postgres.environment.POSTGRES_PASSWORD}
+#-------------------------------------------------------------------------------
