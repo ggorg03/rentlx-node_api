@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
 
 import { CategoriesService } from "../services/CategoriesServices";
-import { CategoriesRepository } from "../repositories/CategoriesRepository";
 
 class CategoriesController {
-  private static repository = new CategoriesRepository();
-  private static service = new CategoriesService(
-    CategoriesController.repository,
-  );
+  private static service = container.resolve(CategoriesService);
 
   async getAllCategories(req: Request, res: Response) {
     const categories = await CategoriesController.service.list();

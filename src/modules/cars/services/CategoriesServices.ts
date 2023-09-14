@@ -1,5 +1,7 @@
 import fs from "fs";
 import { parse as csvParse } from "csv-parse";
+import { inject, injectable } from "tsyringe";
+import "../../../shared/container";
 
 import { ICategoriesRepository } from "../repositories/ICategoriesRepository";
 import { Category } from "../entities/Category";
@@ -9,8 +11,12 @@ interface ICreateRequest {
   description: string;
 }
 
+@injectable()
 class CategoriesService {
-  constructor(private categoriesRepository: ICategoriesRepository) {}
+  constructor(
+    @inject("CategoriesRepository")
+    private categoriesRepository: ICategoriesRepository,
+  ) {}
 
   async list(): Promise<Category[]> {
     const categories = await this.categoriesRepository.list();

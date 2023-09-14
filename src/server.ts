@@ -1,8 +1,11 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express";
+import "reflect-metadata";
 
 import swaggerFile from "./swagger.json";
 import { router } from "./routes";
+
+// import "./shared/container"; // ? Why it's not working, should I remove it ?
 
 const app = express();
 app.use(express.json());
