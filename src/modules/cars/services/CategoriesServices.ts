@@ -1,7 +1,6 @@
 import fs from "fs";
 import { parse as csvParse } from "csv-parse";
 import { inject, injectable } from "tsyringe";
-import "../../../shared/container";
 
 import { ICategoriesRepository } from "../repositories/ICategoriesRepository";
 import { Category } from "../entities/Category";
